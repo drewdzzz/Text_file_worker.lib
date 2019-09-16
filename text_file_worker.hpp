@@ -89,6 +89,9 @@ void test_reversed_strcmp ();
 /// @brief Complex of tests for lowercase_letter
 void test_lowercase_letter ();
 
+/// @brief Complex of tests for make_ptr
+void test_make_ptr ();
+
 /// @brief Uses all the tests
 void tests();
 
@@ -254,6 +257,7 @@ void makeptr ( char* poem_arr, pointer* pointers, long number_of_strings)
         }
         else poem_arr++;
     }
+    poem_arr++;
     while (*poem_arr) poem_arr++;
     pointers->e_ptr = poem_arr - 1;
 }
@@ -350,6 +354,7 @@ void tests()
         test_direct_strcmp ();
         test_reversed_strcmp ();
         test_lowercase_letter ();
+        test_make_ptr ();
     }
 }
 
@@ -528,4 +533,115 @@ void test_lowercase_letter ()
     test_lowercase_letter3 ();
     test_lowercase_letter4 ();
     printf ("LOWERCASE_LETTER WORKS\n\n");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void test_make_ptr1 ()
+{
+    pointer test_ptr[4];
+    char* test_text = "sefsf\0sdrdr\0sdgdg\0sddg\0";
+    long test_number_of_strings = 4;
+    makeptr (test_text, test_ptr, test_number_of_strings);
+    assert (test_ptr[0].b_ptr == &test_text[0]);
+    assert (test_ptr[0].e_ptr == &test_text[4]);
+    assert (test_ptr[1].b_ptr == &test_text[6]);
+    assert (test_ptr[1].e_ptr == &test_text[10]);
+    assert (test_ptr[2].b_ptr == &test_text[12]);
+    assert (test_ptr[2].e_ptr == &test_text[16]);
+    assert (test_ptr[3].b_ptr == &test_text[18]);
+    assert (test_ptr[3].e_ptr == &test_text[21]);
+    printf ("first make_ptr test done\n");
+}
+
+void test_make_ptr2 ()
+{
+    pointer test_ptr[2];
+    char* test_text = "sefsfjfjgvjhgh\0s\0";
+    long test_number_of_strings = 2;
+    makeptr (test_text, test_ptr, test_number_of_strings);
+    assert (test_ptr[0].b_ptr == &test_text[0]);
+    assert (test_ptr[0].e_ptr == &test_text[13]);
+    assert (test_ptr[1].b_ptr == &test_text[15]);
+    assert (test_ptr[1].e_ptr == &test_text[15]);
+    printf ("second make_ptr test done\n");
+}
+
+void test_make_ptr3 ()
+{
+    pointer test_ptr[3];
+    char* test_text = "s\0s\0s\0";
+    long test_number_of_strings = 3;
+    makeptr (test_text, test_ptr, test_number_of_strings);
+    assert (test_ptr[0].b_ptr == &test_text[0]);
+    assert (test_ptr[0].e_ptr == &test_text[0]);
+    assert (test_ptr[1].b_ptr == &test_text[2]);
+    assert (test_ptr[1].e_ptr == &test_text[2]);
+    assert (test_ptr[2].b_ptr == &test_text[4]);
+    assert (test_ptr[2].e_ptr == &test_text[4]);
+    printf ("third make_ptr test done\n");
+}
+
+void test_make_ptr4 ()
+{
+    pointer test_ptr[5];
+    char* test_text = "se\0rdr\0sdgdvddg\0g\0re\0";
+    long test_number_of_strings = 5;
+    makeptr (test_text, test_ptr, test_number_of_strings);
+    assert (test_ptr[0].b_ptr == &test_text[0]);
+    assert (test_ptr[0].e_ptr == &test_text[1]);
+    assert (test_ptr[1].b_ptr == &test_text[3]);
+    assert (test_ptr[1].e_ptr == &test_text[5]);
+    assert (test_ptr[2].b_ptr == &test_text[7]);
+    assert (test_ptr[2].e_ptr == &test_text[14]);
+    assert (test_ptr[3].b_ptr == &test_text[16]);
+    assert (test_ptr[3].e_ptr == &test_text[16]);
+    assert (test_ptr[4].b_ptr == &test_text[18]);
+    assert (test_ptr[4].e_ptr == &test_text[19]);
+    printf ("fourth make_ptr test done\n");
+}
+
+void test_make_ptr ()
+{
+    test_make_ptr1 ();
+    test_make_ptr2 ();
+    test_make_ptr3 ();
+    test_make_ptr4 ();
+    printf ("MAKE_PTR WORKS\n\n");
 }
