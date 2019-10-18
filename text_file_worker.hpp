@@ -57,6 +57,8 @@ void  quicksort ( pointer* arr, long left, long right, int (*strcmp) ( const poi
 /// @return Stream with file
 FILE* open_file ();
 
+FILE* open_file(const char* input_file_name);
+
 /// @brief Writes strings in file
 /// @param **stringpointer Array containing pointers to strings
 /// @param **number_of_strings Number of strings;
@@ -78,6 +80,8 @@ int reversed_strcmp ( const pointer string1, const pointer string2);
 /// 4) number of strings \n
 /// 5) array of struct containing pointers to the beginning and the end of each string
 file_info file_worker ();
+
+file_info file_worker (const char* input_file_name);
 
 
 /// @brief Complex of tests for direct_strcmp
@@ -166,6 +170,37 @@ file_info file_worker ()
     return information;
 }
 
+file_info file_worker (const char* input_file_name)
+{
+	FILE* stream = open_file(input_file_name);
+	assert(stream);
+
+	const long file_size = size_of_file(stream);
+
+	char* poem_arr = (char*)calloc(file_size + 2, sizeof(char));
+	if (!poem_arr)
+	{
+		printf("Memory can't be allocated\n");
+		assert(poem_arr);
+	}
+
+	*poem_arr = '\0';
+	poem_arr++;
+
+	const long number_of_symbols = fread(poem_arr, sizeof(char), file_size, stream);
+	poem_arr[number_of_symbols] = '\0';
+
+	fclose(stream);
+
+	const long number_of_strings = stringcount(poem_arr);
+
+	pointer* stringpointer = (pointer*)calloc(number_of_strings, sizeof(pointer));
+	makeptr(poem_arr, stringpointer, number_of_strings);
+
+	file_info information(file_size, number_of_symbols, poem_arr, number_of_strings, stringpointer);
+	return information;
+}
+
 
 FILE* open_file()                            
 {
@@ -179,6 +214,17 @@ FILE* open_file()
         return nullptr;
     }
     return stream;
+}
+
+FILE* open_file(const char* input_file_name)
+{
+	FILE* stream = NULL;
+	if (!(stream = fopen(input_file_name, "r")))
+	{
+		fprintf(stderr, "Input file is not open\n");
+		return nullptr;
+	}
+	return stream;
 }
 
 void write_in_file( pointer* stringpointer, const long number_of_strings)
